@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Aigentic | AI & Automation Specialists</title>
+    <meta
+      name="description"
+      content="Contact Aigentic to discuss AI and automation opportunities tailored to your organisation."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/Aigentic Logo.svg" />
+  </head>
+  <body>
+    <header>
+      <div class="nav-container">
+        <a class="logo" href="index.html">
+          <img src="assets/Aigentic Logo.svg" alt="Aigentic logo" />
+          <span>Aigentic</span>
+        </a>
+        <a class="primary-link" href="contact.html">Contact</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="badge">Start the conversation</span>
+          <h1>Let’s map your AI &amp; automation roadmap</h1>
+          <p>
+            Share your current challenges and ambitions—we’ll follow up with a tailored plan
+            for how intelligent automation can amplify your team.
+          </p>
+          <div class="hero-actions">
+            <a class="secondary-link" href="index.html">Back to overview</a>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <h2>Contact the team</h2>
+          <ul>
+            <li>
+              <strong>Email</strong>
+              <span><a href="mailto:hello@aigentic.com">hello@aigentic.com</a></span>
+            </li>
+            <li>
+              <strong>Response time</strong>
+              <span>We typically reply within one business day.</span>
+            </li>
+            <li>
+              <strong>Availability</strong>
+              <span>Weekdays 9am–6pm (GMT)</span>
+            </li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="section">
+        <h2>Tell us about your initiative</h2>
+        <p>
+          Provide as much detail as you like—recent process challenges, data sources, tools,
+          or the metrics that matter most. The more context we have, the faster we can chart
+          a pilot or full rollout.
+        </p>
+
+        <form class="form-card" method="post" action="mailto:hello@aigentic.com" enctype="text/plain">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" required />
+
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@company.com" required />
+
+          <label for="message">Project overview</label>
+          <textarea id="message" name="message" placeholder="Describe your goals, timelines, and priority outcomes." required></textarea>
+
+          <button type="submit" class="primary-link">Send message</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Prefer a direct email? Reach us at
+        <a href="mailto:hello@aigentic.com">hello@aigentic.com</a>
+      </p>
+      <p>&copy; <span id="year"></span> Aigentic. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const yearSpan = document.getElementById('year');
+      yearSpan.textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

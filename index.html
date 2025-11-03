@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aigentic | AI & Automation Specialists</title>
+    <meta
+      name="description"
+      content="Aigentic builds tailored AI and automation solutions that streamline operations and accelerate growth."
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/Aigentic Logo.svg" />
+  </head>
+  <body>
+    <div class="background-animation" aria-hidden="true">
+      <svg
+        id="aigentic-background-paths"
+        viewBox="0 0 696 316"
+        preserveAspectRatio="xMidYMid slice"
+      ></svg>
+    </div>
+
+    <header>
+      <div class="nav-container">
+        <a class="logo" href="index.html">
+          <img src="assets/Aigentic Logo.svg" alt="Aigentic logo" />
+          <span>Aigentic</span>
+        </a>
+        <a class="primary-link" href="contact.html">Contact</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="badge">AI &amp; Automation Specialists</span>
+          <h1>Intelligent automation that unlocks growth</h1>
+          <p>
+            We design, build, and maintain AI-powered automations that give your teams more
+            time to focus on high-impact work. From strategy to deployment, Aigentic helps
+            you deliver faster customer experiences and resilient operations.
+          </p>
+          <div class="hero-actions">
+            <a class="primary-link" href="contact.html">Schedule a consultation</a>
+            <a class="secondary-link" href="contact.html">Share your project goals</a>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <h2>What we deliver</h2>
+          <ul>
+            <li>
+              <strong>AI strategy sprints</strong>
+              <span>Identify quick wins and long-term automation opportunities.</span>
+            </li>
+            <li>
+              <strong>Custom automation builds</strong>
+              <span>Launch bespoke workflows tailored to your existing tools and data.</span>
+            </li>
+            <li>
+              <strong>Ongoing optimisation</strong>
+              <span>Continuously improve performance with proactive monitoring and support.</span>
+            </li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="section">
+        <h2>Focused on outcomes that matter</h2>
+        <p>
+          Aigentic pairs deep process knowledge with advanced AI capabilities to deliver
+          measurable results. Whether you need to automate customer journeys, streamline
+          internal operations, or launch new intelligent services, we make sure the solution
+          fits your business and scales with demand.
+        </p>
+
+        <div class="pill-row">
+          <span class="pill">Process automation</span>
+          <span class="pill">AI copilots</span>
+          <span class="pill">Data orchestration</span>
+          <span class="pill">Customer experience automation</span>
+          <span class="pill">Analytics &amp; insights</span>
+        </div>
+
+        <div class="coming-soon">
+          <strong>Coming soon:</strong> An AI-powered assistant to guide visitors through
+          our services and answer questions in real time.
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>
+        Ready to automate your next big idea?
+        <a href="contact.html">Talk to the Aigentic team</a>
+      </p>
+      <p>&copy; <span id="year"></span> Aigentic. All rights reserved.</p>
+    </footer>
+
+    <script>
+      const yearSpan = document.getElementById('year');
+      yearSpan.textContent = new Date().getFullYear();
+    </script>
+    <script>
+      (function initBackgroundPaths() {
+        const svg = document.getElementById('aigentic-background-paths');
+        if (!svg) return;
+
+        const NS = 'http://www.w3.org/2000/svg';
+        const prefersReducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        );
+        const animations = [];
+        const totalPathsPerDirection = 28;
+
+        const buildPathData = (index, position) => {
+          const offsetMultiplier = 5 * position;
+          const baseX = 380 - index * offsetMultiplier;
+          const baseY = 189 + index * 6;
+          const controlX1 = 312 - index * offsetMultiplier;
+          const controlY1 = 216 - index * 6;
+          const controlX2 = 152 - index * offsetMultiplier;
+          const controlY2 = 343 - index * 6;
+          const controlX3 = 616 - index * offsetMultiplier;
+          const controlY3 = 470 - index * 6;
+          const endX = 684 - index * offsetMultiplier;
+          const endY = 875 - index * 6;
+
+          return `M-${baseX} -${baseY}C-${baseX} -${baseY} -${controlX1} ${controlY1} ${controlX2} ${controlY2}C${controlX3} ${controlY3} ${endX} ${endY} ${endX} ${endY}`;
+        };
+
+        const createPath = (index, position) => {
+          const path = document.createElementNS(NS, 'path');
+          path.setAttribute('d', buildPathData(index, position));
+          path.setAttribute(
+            'stroke',
+            position > 0 ? 'rgba(147, 51, 234, 0.85)' : 'rgba(192, 38, 211, 0.7)',
+          );
+          path.setAttribute('stroke-width', (0.6 + index * 0.025).toFixed(3));
+
+          const opacity = Math.min(0.25 + index * 0.015, 0.75);
+          const duration = Math.round(26000 + index * 320 + Math.random() * 6000);
+          const delay = Math.round(Math.random() * 5000);
+
+          path.dataset.opacity = opacity.toFixed(3);
+          path.dataset.duration = String(duration);
+          path.dataset.delay = String(delay);
+
+          svg.appendChild(path);
+          return path;
+        };
+
+        const animatePath = (path) => {
+          const length = path.getTotalLength();
+          const opacity = Number(path.dataset.opacity || '0.4');
+          const duration = Number(path.dataset.duration || '24000');
+          const delay = Number(path.dataset.delay || '0');
+
+          path.style.strokeDasharray = length.toFixed(1);
+          path.style.strokeDashoffset = length.toFixed(1);
+          path.style.opacity = opacity;
+
+          if (prefersReducedMotion.matches) return null;
+
+          const animation = path.animate(
+            [
+              { strokeDashoffset: length, opacity: opacity * 0.55 },
+              { strokeDashoffset: -length, opacity: opacity },
+            ],
+            {
+              duration,
+              iterations: Infinity,
+              easing: 'linear',
+              delay,
+            },
+          );
+
+          animations.push(animation);
+          return animation;
+        };
+
+        const initialise = () => {
+          for (const position of [1, -1]) {
+            for (let i = 0; i < totalPathsPerDirection; i += 1) {
+              const path = createPath(i, position);
+              animatePath(path);
+            }
+          }
+        };
+
+        initialise();
+
+        const handleReducedMotionChange = () => {
+          if (prefersReducedMotion.matches) {
+            animations.forEach((animation) => animation.cancel());
+            animations.length = 0;
+            svg
+              .querySelectorAll('path')
+              .forEach((path) => (path.style.opacity = path.dataset.opacity || '0.35'));
+          } else {
+            svg.querySelectorAll('path').forEach((path) => {
+              if (!path.getAnimations().length) {
+                animatePath(path);
+              }
+            });
+          }
+        };
+
+        prefersReducedMotion.addEventListener('change', handleReducedMotionChange);
+
+        document.addEventListener('visibilitychange', () => {
+          animations.forEach((animation) => {
+            if (document.hidden) {
+              animation.pause();
+            } else {
+              animation.play();
+            }
+          });
+        });
+      })();
+    </script>
+    <script type="module">
+      // Lazily boot the 21st.dev toolbar during local development so the overlay shows up in dev mode.
+      async function setupTwentyFirstToolbar() {
+        const isLocalHost =
+          location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (!isLocalHost) return;
+
+        try {
+          const { initToolbar } = await import('https://esm.sh/@21st-extension/toolbar');
+          initToolbar({ plugins: [] });
+        } catch (error) {
+          console.error('Failed to initialise 21st.dev toolbar', error);
+        }
+      }
+
+      setupTwentyFirstToolbar();
+    </script>
+  </body>
+</html>
