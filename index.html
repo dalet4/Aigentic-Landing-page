@@ -110,8 +110,7 @@
         const prefersReducedMotion = window.matchMedia(
           '(prefers-reduced-motion: reduce)',
         );
-        const animations = [];
-        const totalPathsPerDirection = 28;
+        const totalPathsPerDirection = 14;
 
         const buildPathData = (index, position) => {
           const offsetMultiplier = 5 * position;
@@ -141,80 +140,34 @@
           const opacity = Math.min(0.25 + index * 0.015, 0.75);
           const duration = Math.round(26000 + index * 320 + Math.random() * 6000);
           const delay = Math.round(Math.random() * 5000);
+          const length = path.getTotalLength();
 
-          path.dataset.opacity = opacity.toFixed(3);
-          path.dataset.duration = String(duration);
-          path.dataset.delay = String(delay);
+          path.style.setProperty('--stroke-dash-length', length.toFixed(1));
+          path.style.setProperty('--animation-duration', `${duration}ms`);
+          path.style.setProperty('--animation-delay', `${delay}ms`);
+          path.style.setProperty('--animation-opacity', opacity.toFixed(3));
 
           svg.appendChild(path);
           return path;
         };
 
-        const animatePath = (path) => {
-          const length = path.getTotalLength();
-          const opacity = Number(path.dataset.opacity || '0.4');
-          const duration = Number(path.dataset.duration || '24000');
-          const delay = Number(path.dataset.delay || '0');
-
-          path.style.strokeDasharray = length.toFixed(1);
-          path.style.strokeDashoffset = length.toFixed(1);
-          path.style.opacity = opacity;
-
-          if (prefersReducedMotion.matches) return null;
-
-          const animation = path.animate(
-            [
-              { strokeDashoffset: length, opacity: opacity * 0.55 },
-              { strokeDashoffset: -length, opacity: opacity },
-            ],
-            {
-              duration,
-              iterations: Infinity,
-              easing: 'linear',
-              delay,
-            },
-          );
-
-          animations.push(animation);
-          return animation;
-        };
-
         const initialise = () => {
+          if (prefersReducedMotion.matches) return;
+
           for (const position of [1, -1]) {
             for (let i = 0; i < totalPathsPerDirection; i += 1) {
-              const path = createPath(i, position);
-              animatePath(path);
+              createPath(i, position);
             }
           }
         };
 
         initialise();
 
-        const handleReducedMotionChange = () => {
-          if (prefersReducedMotion.matches) {
-            animations.forEach((animation) => animation.cancel());
-            animations.length = 0;
-            svg
-              .querySelectorAll('path')
-              .forEach((path) => (path.style.opacity = path.dataset.opacity || '0.35'));
-          } else {
-            svg.querySelectorAll('path').forEach((path) => {
-              if (!path.getAnimations().length) {
-                animatePath(path);
-              }
-            });
-          }
-        };
-
-        prefersReducedMotion.addEventListener('change', handleReducedMotionChange);
-
         document.addEventListener('visibilitychange', () => {
-          animations.forEach((animation) => {
-            if (document.hidden) {
-              animation.pause();
-            } else {
-              animation.play();
-            }
+          const paths = svg.querySelectorAll('path');
+          paths.forEach((path) => {
+            const isPaused = document.hidden;
+            path.style.animationPlayState = isPaused ? 'paused' : 'running';
           });
         });
       })();

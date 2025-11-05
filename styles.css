@@ -54,8 +54,25 @@ a {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  will-change: stroke-dashoffset, opacity;
   shape-rendering: geometricPrecision;
+  stroke-dasharray: var(--stroke-dash-length);
+  stroke-dashoffset: var(--stroke-dash-length);
+  opacity: 0;
+  animation: draw var(--animation-duration) var(--animation-delay) linear infinite;
+  transform: translateZ(0);
+}
+
+@keyframes draw {
+  to {
+    stroke-dashoffset: calc(var(--stroke-dash-length) * -1);
+    opacity: var(--animation-opacity);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .background-animation path {
+    animation: none;
+  }
 }
 
 header {
