@@ -8,14 +8,14 @@
       name="description"
       content="Aigentic builds tailored AI and automation solutions that streamline operations and accelerate growth."
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=6" />
     <link rel="icon" type="image/svg+xml" href="assets/Aigentic Logo.svg" />
   </head>
   <body>
     <div class="background-animation" aria-hidden="true">
       <svg
         id="aigentic-background-paths"
-        viewBox="0 0 696 316"
+        viewBox="-400 -200 1500 1200"
         preserveAspectRatio="xMidYMid slice"
       ></svg>
     </div>
@@ -110,8 +110,8 @@
         const prefersReducedMotion = window.matchMedia(
           '(prefers-reduced-motion: reduce)',
         );
-        const animations = [];
-        const totalPathsPerDirection = 28;
+        const totalPathsPerDirection = 12;
+        const pathsMeta = [];
 
         const buildPathData = (index, position) => {
           const offsetMultiplier = 5 * position;
@@ -134,93 +134,74 @@
           path.setAttribute('d', buildPathData(index, position));
           path.setAttribute(
             'stroke',
-            position > 0 ? 'rgba(147, 51, 234, 0.85)' : 'rgba(192, 38, 211, 0.7)',
+            position > 0 ? 'rgba(0, 212, 255, 0.8)' : 'rgba(157, 78, 221, 0.7)',
           );
           path.setAttribute('stroke-width', (0.6 + index * 0.025).toFixed(3));
 
-          const opacity = Math.min(0.25 + index * 0.015, 0.75);
-          const duration = Math.round(26000 + index * 320 + Math.random() * 6000);
-          const delay = Math.round(Math.random() * 5000);
-
-          path.dataset.opacity = opacity.toFixed(3);
-          path.dataset.duration = String(duration);
-          path.dataset.delay = String(delay);
-
           svg.appendChild(path);
-          return path;
+
+          const length = path.getTotalLength();
+          const duration = Math.round(24000 + index * 420 + Math.random() * 4500);
+          const delay = Math.round(Math.random() * duration);
+          const opacity = Math.min(0.25 + index * 0.018, 0.7);
+          const visibleSegment = Math.max(length * 0.38, 140);
+          const gapSegment = Math.max(length - visibleSegment, 220);
+
+          path.style.setProperty('--dash-travel', `${(-length).toFixed(1)}px`);
+          path.style.strokeDasharray = `${visibleSegment.toFixed(1)} ${gapSegment.toFixed(1)}`;
+          path.style.opacity = opacity.toFixed(3);
+          path.style.strokeDashoffset = '0px';
+
+          pathsMeta.push({ path, length, duration, delay, opacity });
         };
 
-        const animatePath = (path) => {
-          const length = path.getTotalLength();
-          const opacity = Number(path.dataset.opacity || '0.4');
-          const duration = Number(path.dataset.duration || '24000');
-          const delay = Number(path.dataset.delay || '0');
+        const startAnimations = () => {
+          pathsMeta.forEach(({ path, length, duration, delay }) => {
+            path.style.animation = `draw ${duration}ms linear infinite`;
+            path.style.animationDelay = `-${delay}ms`;
+          });
+        };
 
-          path.style.strokeDasharray = length.toFixed(1);
-          path.style.strokeDashoffset = length.toFixed(1);
-          path.style.opacity = opacity;
-
-          if (prefersReducedMotion.matches) return null;
-
-          const animation = path.animate(
-            [
-              { strokeDashoffset: length, opacity: opacity * 0.55 },
-              { strokeDashoffset: -length, opacity: opacity },
-            ],
-            {
-              duration,
-              iterations: Infinity,
-              easing: 'linear',
-              delay,
-            },
-          );
-
-          animations.push(animation);
-          return animation;
+        const stopAnimations = () => {
+          pathsMeta.forEach(({ path }) => {
+            path.style.animation = 'none';
+            path.style.strokeDashoffset = '0px';
+          });
         };
 
         const initialise = () => {
           for (const position of [1, -1]) {
             for (let i = 0; i < totalPathsPerDirection; i += 1) {
-              const path = createPath(i, position);
-              animatePath(path);
+              createPath(i, position);
             }
+          }
+
+          if (prefersReducedMotion.matches) {
+            stopAnimations();
+          } else {
+            startAnimations();
           }
         };
 
         initialise();
 
-        const handleReducedMotionChange = () => {
-          if (prefersReducedMotion.matches) {
-            animations.forEach((animation) => animation.cancel());
-            animations.length = 0;
-            svg
-              .querySelectorAll('path')
-              .forEach((path) => (path.style.opacity = path.dataset.opacity || '0.35'));
+        prefersReducedMotion.addEventListener('change', (event) => {
+          if (event.matches) {
+            stopAnimations();
           } else {
-            svg.querySelectorAll('path').forEach((path) => {
-              if (!path.getAnimations().length) {
-                animatePath(path);
-              }
-            });
+            startAnimations();
           }
-        };
-
-        prefersReducedMotion.addEventListener('change', handleReducedMotionChange);
+        });
 
         document.addEventListener('visibilitychange', () => {
-          animations.forEach((animation) => {
-            if (document.hidden) {
-              animation.pause();
-            } else {
-              animation.play();
-            }
+          const playState = document.hidden ? 'paused' : 'running';
+          pathsMeta.forEach(({ path }) => {
+            path.style.animationPlayState = playState;
           });
         });
       })();
     </script>
     <script type="module">
-      // Lazily boot the 21st.dev toolbar during local development so the overlay shows up in dev mode.
       async function setupTwentyFirstToolbar() {
         const isLocalHost =
           location.hostname === 'localhost' || location.hostname === '127.0.0.1';
