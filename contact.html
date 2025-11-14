@@ -1,17 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Contact Aigentic | AI & Automation Specialists</title>
+    <title>Contact Aigentic | Self-Learning Lead Generation</title>
     <meta
       name="description"
-      content="Contact Aigentic to discuss AI and automation opportunities tailored to your organisation."
+      content="Get your autonomous lead generation agent. We build AI systems that find, score, and maintain high-quality leads automatically."
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=8" />
     <link rel="icon" type="image/svg+xml" href="assets/Aigentic Logo.svg" />
   </head>
   <body>
+    <div class="background-animation" aria-hidden="true">
+      <svg
+        id="aigentic-background-paths"
+        viewBox="-400 -200 1500 1200"
+        preserveAspectRatio="xMidYMid slice"
+      ></svg>
+    </div>
+
     <header>
       <div class="nav-container">
         <a class="logo" href="index.html">
@@ -25,11 +33,10 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <span class="badge">Start the conversation</span>
-          <h1>Let’s map your AI &amp; automation roadmap</h1>
+          <span class="badge">Start Building Your Lead Engine</span>
+          <h1>Ready to stop chasing leads?</h1>
           <p>
-            Share your current challenges and ambitions—we’ll follow up with a tailored plan
-            for how intelligent automation can amplify your team.
+            Tell us about your ideal customer profile and we'll show you how our self-learning AI agent can build and maintain a high-quality prospect database—automatically.
           </p>
           <div class="hero-actions">
             <a class="secondary-link" href="index.html">Back to overview</a>
@@ -37,7 +44,7 @@
         </div>
 
         <aside class="hero-card">
-          <h2>Contact the team</h2>
+          <h2>Get in touch</h2>
           <ul>
             <li>
               <strong>Email</strong>
@@ -56,11 +63,9 @@
       </section>
 
       <section class="section">
-        <h2>Tell us about your initiative</h2>
+        <h2>Tell us about your target market</h2>
         <p>
-          Provide as much detail as you like—recent process challenges, data sources, tools,
-          or the metrics that matter most. The more context we have, the faster we can chart
-          a pilot or full rollout.
+          Share your ideal customer profile, current lead generation challenges, or the quality issues you're facing. The more detail you provide, the faster we can design your autonomous lead engine.
         </p>
 
         <form class="form-card" method="post" action="mailto:hello@aigentic.com" enctype="text/plain">
@@ -70,10 +75,10 @@
           <label for="email">Email</label>
           <input id="email" name="email" type="email" placeholder="you@company.com" required />
 
-          <label for="message">Project overview</label>
-          <textarea id="message" name="message" placeholder="Describe your goals, timelines, and priority outcomes." required></textarea>
+          <label for="message">What leads are you looking for?</label>
+          <textarea id="message" name="message" placeholder="e.g., Marketing agencies in London with 10-50 employees, or accountants in Yorkshire looking for digital transformation..." required></textarea>
 
-          <button type="submit" class="primary-link">Send message</button>
+          <button type="submit" class="primary-link">Request a demo</button>
         </form>
       </section>
     </main>
@@ -89,6 +94,106 @@
     <script>
       const yearSpan = document.getElementById('year');
       yearSpan.textContent = new Date().getFullYear();
+    </script>
+    <script>
+      (function initBackgroundPaths() {
+        const svg = document.getElementById('aigentic-background-paths');
+        if (!svg) return;
+
+        const NS = 'http://www.w3.org/2000/svg';
+        const prefersReducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)',
+        );
+        const totalPathsPerDirection = 12;
+        const pathsMeta = [];
+
+        const buildPathData = (index, position) => {
+          const offsetMultiplier = 5 * position;
+          const baseX = 380 - index * offsetMultiplier;
+          const baseY = 189 + index * 6;
+          const controlX1 = 312 - index * offsetMultiplier;
+          const controlY1 = 216 - index * 6;
+          const controlX2 = 152 - index * offsetMultiplier;
+          const controlY2 = 343 - index * 6;
+          const controlX3 = 616 - index * offsetMultiplier;
+          const controlY3 = 470 - index * 6;
+          const endX = 684 - index * offsetMultiplier;
+          const endY = 875 - index * 6;
+
+          return `M-${baseX} -${baseY}C-${baseX} -${baseY} -${controlX1} ${controlY1} ${controlX2} ${controlY2}C${controlX3} ${controlY3} ${endX} ${endY} ${endX} ${endY}`;
+        };
+
+        const createPath = (index, position) => {
+          const path = document.createElementNS(NS, 'path');
+          path.setAttribute('d', buildPathData(index, position));
+          path.setAttribute(
+            'stroke',
+            position > 0 ? 'rgba(0, 212, 255, 0.8)' : 'rgba(157, 78, 221, 0.7)',
+          );
+          path.setAttribute('stroke-width', (0.6 + index * 0.025).toFixed(3));
+
+          svg.appendChild(path);
+
+          const length = path.getTotalLength();
+          const duration = Math.round(24000 + index * 420 + Math.random() * 4500);
+          const delay = Math.round(Math.random() * duration);
+          const opacity = Math.min(0.25 + index * 0.018, 0.7);
+          const visibleSegment = Math.max(length * 0.38, 140);
+          const gapSegment = Math.max(length - visibleSegment, 220);
+
+          path.style.setProperty('--dash-travel', `${(-length).toFixed(1)}px`);
+          path.style.strokeDasharray = `${visibleSegment.toFixed(1)} ${gapSegment.toFixed(1)}`;
+          path.style.opacity = opacity.toFixed(3);
+          path.style.strokeDashoffset = '0px';
+
+          pathsMeta.push({ path, length, duration, delay, opacity });
+        };
+
+        const startAnimations = () => {
+          pathsMeta.forEach(({ path, length, duration, delay }) => {
+            path.style.animation = `draw ${duration}ms linear infinite`;
+            path.style.animationDelay = `-${delay}ms`;
+          });
+        };
+
+        const stopAnimations = () => {
+          pathsMeta.forEach(({ path }) => {
+            path.style.animation = 'none';
+            path.style.strokeDashoffset = '0px';
+          });
+        };
+
+        const initialise = () => {
+          for (const position of [1, -1]) {
+            for (let i = 0; i < totalPathsPerDirection; i += 1) {
+              createPath(i, position);
+            }
+          }
+
+          if (prefersReducedMotion.matches) {
+            stopAnimations();
+          } else {
+            startAnimations();
+          }
+        };
+
+        initialise();
+
+        prefersReducedMotion.addEventListener('change', (event) => {
+          if (event.matches) {
+            stopAnimations();
+          } else {
+            startAnimations();
+          }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          const playState = document.hidden ? 'paused' : 'running';
+          pathsMeta.forEach(({ path }) => {
+            path.style.animationPlayState = playState;
+          });
+        });
+      })();
     </script>
   </body>
 </html>
